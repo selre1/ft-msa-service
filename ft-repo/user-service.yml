@@ -10,7 +10,7 @@ token:
     secret:  c3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwK
 
 gateway:
-    ip: 172.18.0.5 #175.116.181.23
+    ip: 172.18.0.5
  
 value:
     check: user_service # config refresh 확인용
