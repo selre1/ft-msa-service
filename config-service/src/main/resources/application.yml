@@ -3,13 +3,17 @@ server:
 spring:
   application:
     name: config-service
-  profiles:
-    active: native
+  #profiles:
+  #  active: native
   cloud:
     config:
       server:
-        native:
-          search-locations: file:/config #file:///${user.home}/Desktop/ft-repo
+        git:
+          uri: https://github.com/selre1/ft-msa-service.git
+          default-label: main
+          search-paths: ft-repo
+        #native:
+        #  search-locations: file:/config #file:///${user.home}/Desktop/ft-repo
   rabbitmq:
     host: 127.0.0.1
     port: 5672
