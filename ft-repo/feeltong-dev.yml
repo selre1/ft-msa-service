@@ -1,0 +1,9 @@
+token:
+  expiration_time: 86400000 #86400000 # 24시간
+  secret:  c3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwK
+
+gateway:
+  ip: 172.18.0.5
+ 
+value:
+  check: dev # config refresh 확인용

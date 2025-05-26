@@ -1,0 +1,20 @@
+spring: 
+    datasource:
+        url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+        driver-class-name: org.h2.Driver
+        username: sa
+        password: "{cipher}1b88620d0cce4b1536bde0725018427bef63623a09c13385570fedf2bcba0e8e"
+
+token:
+    expiration_time: 86400000 #86400000 # 24시간
+    secret:  c3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwK
+
+gateway:
+    ip: 172.18.0.5 #175.116.181.23
+ 
+value:
+    check: user_service # config refresh 확인용
+    
+order-service:
+    exception:
+        orders_is_empty: user's oders is empty(actuator busrefresh)
