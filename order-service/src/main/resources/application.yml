@@ -1,0 +1,52 @@
+server:
+  port: 0
+
+
+spring:
+  application:
+     name: order-service
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#      settings:
+#        web-allow-others: true
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:testdb
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:postgresql://localhost:5432/feeltong
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: admin
+  cloud:
+    openfeign:
+      micrometer:
+        enabled: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defalutZone: http://localhost:8080/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      type: b3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+logging:
+  ## 추가
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"
