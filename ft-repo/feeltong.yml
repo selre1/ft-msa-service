@@ -6,4 +6,4 @@ gateway:
   ip: 172.18.0.5
  
 value:
-  check: default_bnag # config refresh 확인용
+  check: default_bnag_test # config refresh 확인용
