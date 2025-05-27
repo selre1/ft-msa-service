@@ -14,8 +14,8 @@ public class OrderService {
     private final ModelMapper modelMapper;
 
     public OrderDto createOrder(OrderDto orderDto){
-        orderDto.setOrderId(UUID.randomUUID().toString());
-        orderDto.setTotalPrice(orderDto.getQty() * orderDto.getUnitPrice());
+        //orderDto.setOrderId(UUID.randomUUID().toString());
+        //orderDto.setTotalPrice(orderDto.getQty() * orderDto.getUnitPrice());
         OrderSheet order = modelMapper.map(orderDto,OrderSheet.class);
         order.setCreatedAt(LocalDateTime.now());
         orderRepository.save(order);

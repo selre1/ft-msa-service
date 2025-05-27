@@ -1,0 +1,38 @@
+- rabbitmq
+docker run -d --name rabbitmq --network feeltong-network -p 15672:15672 -p 5672:5672 -p 15671:15671 -p 5671:5671 -p 4369:4369 -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:management
+
+- zipkin
+docker run -d -p 9411:9411 --network feeltong-network --name zipkin
+
+- eureka server
+docker run -d -p 8761:8761 --network feeltong-network --name discovery-service feeltong/discovery-service:1.0
+
+
+- config server
+docker run -d -p 8888:8888 --network feeltong-network -e "spring.rabbitmq.host=rabbitmq" -e "spring.profiles.active=default" --name config-service feeltong/config-service:1.0
+(*** -v "C:/Users/admin/Desktop/ft-repo":/config   => 로컬사용시)
+(*** -e "spring.profiles.active=native")
+
+
+-gateway
+docker run -d -p 8000:8000 --network feeltong-network -e "spring.cloud.config.uri=http://config-service:8888" -e "spring.rabbitmq.host=rabbitmq" -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" --name gateway feeltong/gateway:1.0
+
+- postgres
+ docker run -d -p 5432:5432 --network feeltong-network --name postgres feeltong/postgres:1.0
+
+-kafka, zookeeper
+docker compose -f docker-compose-single-broker.yml up -d
+(user specified IP address is supported 오류 => 네크워크 삭제 후  docker network create --subnet=172.18.0.0/16 feeltong-network 다시 생성)
+
+-user-service
+docker run -d --network feeltong-network --name user-service -e "spring.cloud.config.uri=http://config-service:8888"  -e "spring.rabbitmq.host=rabbitmq" -e "management.zipkin.tracing.endpoint=http://zipkin:9411/api/v2/spans" -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/"  -e "logging.file=/api-logs/users-ws.log" feeltong/user-service:1.0
+
+
+-order-service
+docker run -d --network feeltong-network --name order-service -e "spring.cloud.config.uri=http://config-service:8888"  -e "spring.datasource.url=jdbc:postgresql://postgres:5432/feeltong"  -e "spring.rabbitmq.host=rabbitmq" -e "management.zipkin.tracing.endpoint=http://zipkin:9411/api/v2/spans" -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/"  -e "logging.file=/api-logs/users-ws.log" feeltong/order-service:1.0
+
+-catalog-service
+docker run -d --network feeltong-network --name catalog-service -e "spring.rabbitmq.host=rabbitmq" -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/"  -e "logging.file=/api-logs/users-ws.log" feeltong/catalog-service:1.0
+
+
+

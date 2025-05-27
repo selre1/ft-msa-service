@@ -42,17 +42,17 @@ public class OrderController {
         /*
         * 원래는 order 받으면 db에 바로 저장
         * */
-        /*OrderDto newOrder = orderService.createOrder(orderDto);
-        ResponseOrder responseOrder = modelMapper.map(newOrder, ResponseOrder.class);*/
+        //OrderDto newOrder = orderService.createOrder(orderDto);
+        //ResponseOrder responseOrder = modelMapper.map(newOrder, ResponseOrder.class);
 
         /*
         * 이제는 order 받으면 kafka로 보냄
         * */
         orderDto.setOrderId(UUID.randomUUID().toString());
         orderDto.setTotalPrice(orderDto.getQty() * orderDto.getUnitPrice());
-
+        orderService.createOrder(orderDto);
         kafkaProducer.send("example-catalog-topic",orderDto);
-        orderProducer.send("order_sheet",orderDto);
+        //orderProducer.send("order_sheet",orderDto);
 
         ResponseOrder responseOrder = modelMapper.map(orderDto,ResponseOrder.class);
         log.info("after added order data");
